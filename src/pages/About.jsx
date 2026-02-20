@@ -66,7 +66,15 @@ export default function About() {
               {austin.eyebrow}
             </p>
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-brand-950 mb-6">
-              {austin.title}
+              {austin.title.includes('. ') ? (
+                <>
+                  {austin.title.split('. ')[0]}.
+                  <br className="md:hidden" />
+                  {' '}{austin.title.split('. ').slice(1).join('. ')}
+                </>
+              ) : (
+                austin.title
+              )}
             </h2>
             {austin.paragraphs.map((p, i) => (
               <p key={i} className="text-brand-600 text-lg leading-relaxed mb-4">
