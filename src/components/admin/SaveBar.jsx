@@ -1,6 +1,6 @@
-import { Check, Loader2, RotateCcw } from 'lucide-react'
+import { Check, Loader2, Undo2 } from 'lucide-react'
 
-export default function SaveBar({ onSave, onReset, saving, saved, dirty }) {
+export default function SaveBar({ onSave, onUndo, saving, saved, dirty }) {
   return (
     <div className="flex items-center gap-3 flex-wrap">
       <button
@@ -16,14 +16,14 @@ export default function SaveBar({ onSave, onReset, saving, saved, dirty }) {
         {saving ? 'Saving...' : saved ? 'Saved!' : 'Save Changes'}
       </button>
 
-      {onReset && (
+      {onUndo && (
         <button
-          onClick={onReset}
-          disabled={saving}
-          className="inline-flex items-center gap-2 text-sm font-medium text-brand-600 px-4 py-2.5 rounded-xl border border-brand-200 hover:bg-brand-100 disabled:opacity-50 transition-colors cursor-pointer"
+          onClick={onUndo}
+          disabled={saving || !dirty}
+          className="inline-flex items-center gap-2 text-sm font-medium text-brand-600 px-4 py-2.5 rounded-xl border border-brand-200 hover:bg-brand-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
-          <RotateCcw size={14} />
-          Reset to Defaults
+          <Undo2 size={14} />
+          Undo Changes
         </button>
       )}
     </div>

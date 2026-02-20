@@ -82,7 +82,7 @@ function ItemForm({ item, onSave, onCancel }) {
 }
 
 function CategoryEditor({ sectionKey }) {
-  const { data, loading, saving, saved, error, dirty, update, save, reset } =
+  const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor(sectionKey)
   const [editingId, setEditingId] = useState(null)
   const [adding, setAdding] = useState(false)
@@ -132,7 +132,7 @@ function CategoryEditor({ sectionKey }) {
       <div className="flex items-center justify-between mb-6">
         <SaveBar
           onSave={save}
-          onReset={reset}
+          onUndo={undo}
           saving={saving}
           saved={saved}
           dirty={dirty}

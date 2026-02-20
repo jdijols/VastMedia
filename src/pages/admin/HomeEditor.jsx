@@ -5,7 +5,7 @@ import MediaUploader from '../../components/admin/MediaUploader'
 import { ICON_OPTIONS } from '../../lib/icons'
 
 export default function HomeEditor() {
-  const { data, loading, saving, saved, error, dirty, update, save, reset } =
+  const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor('homepage')
 
   if (loading || !data) {
@@ -59,7 +59,7 @@ export default function HomeEditor() {
       )}
 
       <div className="mb-6">
-        <SaveBar onSave={save} onReset={reset} saving={saving} saved={saved} dirty={dirty} />
+        <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
       </div>
 
       {/* Hero */}

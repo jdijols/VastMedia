@@ -4,7 +4,7 @@ import SaveBar from '../../components/admin/SaveBar'
 import { SOCIAL_PLATFORMS } from '../../lib/socials'
 
 export default function FooterEditor() {
-  const { data, loading, saving, saved, error, dirty, update, save, reset } =
+  const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor('footer')
 
   if (loading || !data) {
@@ -63,7 +63,7 @@ export default function FooterEditor() {
       )}
 
       <div className="mb-6">
-        <SaveBar onSave={save} onReset={reset} saving={saving} saved={saved} dirty={dirty} />
+        <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
       </div>
 
       {/* Description & Copyright */}

@@ -9,13 +9,21 @@ export function useEditor(section) {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
   const [dirty, setDirty] = useState(false)
+  const savedSnapshot = useRef(null)
   const savedTimer = useRef(null)
 
   useEffect(() => {
     contentApi
       .get(section)
-      .then((json) => setData(json))
-      .catch(() => setData(DEFAULTS[section]))
+      .then((json) => {
+        setData(json)
+        savedSnapshot.current = json
+      })
+      .catch(() => {
+        const fallback = DEFAULTS[section]
+        setData(fallback)
+        savedSnapshot.current = fallback
+      })
       .finally(() => setLoading(false))
   }, [section])
 
@@ -33,6 +41,7 @@ export function useEditor(section) {
     setError('')
     try {
       await contentApi.update(section, data)
+      savedSnapshot.current = data
       setSaved(true)
       setDirty(false)
       if (savedTimer.current) clearTimeout(savedTimer.current)
@@ -44,11 +53,13 @@ export function useEditor(section) {
     }
   }, [section, data])
 
-  const reset = useCallback(() => {
-    setData(DEFAULTS[section])
-    setDirty(true)
-    setSaved(false)
-  }, [section])
+  const undo = useCallback(() => {
+    if (savedSnapshot.current) {
+      setData(savedSnapshot.current)
+      setDirty(false)
+      setSaved(false)
+    }
+  }, [])
 
-  return { data, loading, saving, saved, error, dirty, update, save, reset }
+  return { data, loading, saving, saved, error, dirty, update, save, undo }
 }

@@ -149,7 +149,7 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
 }
 
 export default function PricingManager() {
-  const { data, loading, saving, saved, error, dirty, update, save, reset } =
+  const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor('pricing')
   const [editingId, setEditingId] = useState(null)
   const [adding, setAdding] = useState(false)
@@ -270,7 +270,7 @@ export default function PricingManager() {
       </div>
 
       <div className="flex items-center justify-between mb-6">
-        <SaveBar onSave={save} onReset={reset} saving={saving} saved={saved} dirty={dirty} />
+        <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
         <button
           onClick={() => {
             setAdding(true)

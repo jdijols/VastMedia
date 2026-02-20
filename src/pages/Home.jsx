@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center overflow-hidden">
+      <section className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] min-h-[600px] flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800" />
         <img
           src={hero.backgroundImage}

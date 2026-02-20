@@ -4,7 +4,7 @@ import SaveBar from '../../components/admin/SaveBar'
 import MediaUploader from '../../components/admin/MediaUploader'
 
 export default function AboutEditor() {
-  const { data, loading, saving, saved, error, dirty, update, save, reset } =
+  const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor('about')
 
   if (loading || !data) {
@@ -76,7 +76,7 @@ export default function AboutEditor() {
       )}
 
       <div className="mb-6">
-        <SaveBar onSave={save} onReset={reset} saving={saving} saved={saved} dirty={dirty} />
+        <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
       </div>
 
       {/* Intro Section */}
