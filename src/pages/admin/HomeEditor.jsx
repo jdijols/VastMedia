@@ -31,7 +31,7 @@ export default function HomeEditor() {
   function addServiceItem() {
     setSection('services', 'items', [
       ...services.items,
-      { id: `svc-${Date.now()}`, icon: 'Camera', title: '', description: '' },
+      { id: `svc-${Date.now()}`, icon: 'Camera', title: '', description: '', image: '' },
     ])
   }
 
@@ -255,6 +255,14 @@ export default function HomeEditor() {
                     >
                       <Trash2 size={14} />
                     </button>
+                  </div>
+                  <div>
+                    <label className="admin-label">Card Image</label>
+                    <MediaUploader
+                      value={item.image}
+                      onChange={(url) => updateServiceItem(i, 'image', url)}
+                      accept="image/*"
+                    />
                   </div>
                 </div>
               ))}

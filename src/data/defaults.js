@@ -23,6 +23,8 @@ export const DEFAULTS = {
           title: 'Real Estate Photography',
           description:
             'HDR interior and exterior shots that make listings sell faster. Styled, lit, and edited to showcase every property at its absolute best.',
+          image:
+            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=90',
         },
         {
           id: 'svc-2',
@@ -30,6 +32,8 @@ export const DEFAULTS = {
           title: 'Aerial Drone Coverage',
           description:
             'FAA-licensed aerial photography and video that reveals the full scope of a property, neighborhood, and surrounding landscape.',
+          image:
+            'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&q=90',
         },
         {
           id: 'svc-3',
@@ -37,6 +41,8 @@ export const DEFAULTS = {
           title: 'Cinematic Video Tours',
           description:
             'Smooth, story-driven walkthroughs that give buyers the feel of stepping through the front door — before they ever visit.',
+          image:
+            'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=90',
         },
         {
           id: 'svc-4',
@@ -44,6 +50,8 @@ export const DEFAULTS = {
           title: 'Events & Portraits',
           description:
             'From corporate gatherings to milestone celebrations, we capture every moment with an eye for authenticity and emotion.',
+          image:
+            'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=90',
         },
       ],
     },

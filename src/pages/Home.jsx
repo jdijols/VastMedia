@@ -77,13 +77,25 @@ export default function Home() {
               return (
                 <div
                   key={service.id || service.title}
-                  className="group bg-white rounded-2xl border border-brand-100 p-8 hover:shadow-xl hover:border-brand-200 transition-all duration-300"
+                  className="group bg-white rounded-2xl border border-brand-100 overflow-hidden hover:shadow-xl hover:border-brand-200 transition-all duration-300"
                 >
-                  <div className="inline-flex p-3 rounded-xl bg-brand-50 group-hover:bg-brand-950 transition-colors duration-300 mb-5">
-                    <Icon size={24} className="text-brand-600 group-hover:text-white transition-colors duration-300" />
+                  <div className="relative h-48">
+                    {service.image && (
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-white via-white/30 to-transparent" />
                   </div>
-                  <h3 className="font-semibold text-brand-950 mb-2">{service.title}</h3>
-                  <p className="text-sm text-brand-500 leading-relaxed">{service.description}</p>
+                  <div className="px-8 pb-8 pt-5">
+                    <div className="inline-flex p-3 rounded-xl bg-brand-50 group-hover:bg-brand-950 transition-colors duration-300 mb-5">
+                      <Icon size={24} className="text-brand-600 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <h3 className="font-semibold text-brand-950 mb-2">{service.title}</h3>
+                    <p className="text-sm text-brand-500 leading-relaxed">{service.description}</p>
+                  </div>
                 </div>
               )
             })}
