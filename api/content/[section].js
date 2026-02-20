@@ -59,6 +59,7 @@ export default async function handler(req, res) {
       const blob = await put(`content/${section}.json`, JSON.stringify(req.body), {
         access: 'public',
         addRandomSuffix: false,
+        allowOverwrite: true,
         contentType: 'application/json',
       })
       return res.status(200).json({ success: true, url: blob.url })
