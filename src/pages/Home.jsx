@@ -33,8 +33,8 @@ export default function Home() {
           className="absolute inset-0 w-full h-full object-cover"
         />
 
-        <Container className="relative z-10">
-          <div className="max-w-2xl bg-gradient-to-br from-brand-950/85 to-brand-900/75 backdrop-blur-md rounded-2xl p-8 md:p-12 lg:p-14">
+        <Container className="relative z-10 w-full">
+          <div className="max-w-4xl bg-gradient-to-br from-brand-950/60 to-brand-900/45 backdrop-blur-sm rounded-2xl p-8 md:p-12 lg:p-14">
             <p className="text-brand-300 text-sm font-semibold uppercase tracking-[0.2em] mb-6">
               {hero.eyebrow}
             </p>
