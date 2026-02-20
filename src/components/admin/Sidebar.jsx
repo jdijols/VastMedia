@@ -16,11 +16,11 @@ import { useAuth } from '../../context/AuthContext'
 
 const links = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
+  { to: '/admin/home', icon: Home, label: 'Home Page' },
+  { to: '/admin/testimonials', icon: MessageSquareQuote, label: 'Testimonials' },
   { to: '/admin/portfolio', icon: Images, label: 'Portfolio' },
   { to: '/admin/pricing', icon: DollarSign, label: 'Services & Pricing' },
-  { to: '/admin/testimonials', icon: MessageSquareQuote, label: 'Testimonials' },
   { to: '/admin/about', icon: FileText, label: 'About Page' },
-  { to: '/admin/home', icon: Home, label: 'Home Page' },
   { to: '/admin/footer', icon: PanelBottom, label: 'Footer' },
 ]
 

@@ -11,6 +11,18 @@ import {
 
 const sections = [
   {
+    to: '/admin/home',
+    icon: Home,
+    title: 'Home Page',
+    description: 'Edit hero text, service cards, and the call-to-action.',
+  },
+  {
+    to: '/admin/testimonials',
+    icon: MessageSquareQuote,
+    title: 'Testimonials',
+    description: 'Add, edit, or remove client testimonials.',
+  },
+  {
     to: '/admin/portfolio',
     icon: Images,
     title: 'Portfolio',
@@ -23,22 +35,10 @@ const sections = [
     description: 'Edit service packages, pricing, and feature lists.',
   },
   {
-    to: '/admin/testimonials',
-    icon: MessageSquareQuote,
-    title: 'Testimonials',
-    description: 'Add, edit, or remove client testimonials.',
-  },
-  {
     to: '/admin/about',
     icon: FileText,
     title: 'About Page',
     description: 'Update your story, stats, and about page copy.',
-  },
-  {
-    to: '/admin/home',
-    icon: Home,
-    title: 'Home Page',
-    description: 'Edit hero text, service cards, and the call-to-action.',
   },
   {
     to: '/admin/footer',
