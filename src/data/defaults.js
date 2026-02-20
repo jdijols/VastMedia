@@ -53,6 +53,8 @@ export const DEFAULTS = {
         "Whether you're selling a property or capturing an unforgettable moment, let's create visuals that demand attention.",
       buttonText: 'Get Started',
       buttonLink: '/booking',
+      backgroundImage:
+        'https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=1920&q=90',
     },
   },
 

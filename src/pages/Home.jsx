@@ -165,9 +165,14 @@ export default function Home() {
       )}
 
       {/* CTA */}
-      <section className="py-24">
-        <Container>
-          <div className="bg-brand-950 rounded-3xl p-12 md:p-20 text-center">
+      <section className="relative py-24 overflow-hidden">
+        <img
+          src={cta.backgroundImage}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <Container className="relative z-10">
+          <div className="bg-gradient-to-br from-brand-950/60 to-brand-900/45 backdrop-blur-sm rounded-3xl p-12 md:p-20 text-center">
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
               {cta.title}
             </h2>

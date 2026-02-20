@@ -309,6 +309,15 @@ export default function HomeEditor() {
               />
             </div>
           </div>
+
+          <div>
+            <label className="admin-label">Background Image</label>
+            <MediaUploader
+              value={cta.backgroundImage}
+              onChange={(url) => setSection('cta', 'backgroundImage', url)}
+              accept="image/*"
+            />
+          </div>
         </div>
       </div>
     </div>
