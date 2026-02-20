@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
-import { Facebook, Instagram } from 'lucide-react'
+import { Mail, Phone } from 'lucide-react'
 import Container from '../ui/Container'
+import { useContent } from '../../hooks/useContent'
+import { getSocialIcon } from '../../lib/socials'
 
 const nav = [
   { label: 'Home', to: '/' },
@@ -11,6 +13,8 @@ const nav = [
 ]
 
 export default function Footer() {
+  const { data } = useContent('footer')
+
   return (
     <footer className="bg-brand-950 text-brand-300 mt-auto">
       <Container className="py-16">
@@ -20,7 +24,7 @@ export default function Footer() {
               VAST<span className="text-brand-500">MEDIA</span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed max-w-xs">
-              Austin-based photography and videography. Bold visuals for real estate, events, portraits, and brands.
+              {data.description}
             </p>
           </div>
 
@@ -46,34 +50,53 @@ export default function Footer() {
             <h4 className="text-white font-semibold text-sm uppercase tracking-widest mb-4">
               Connect
             </h4>
-            <div className="flex gap-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-brand-900 hover:bg-brand-800 text-white transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-brand-900 hover:bg-brand-800 text-white transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={20} />
-              </a>
+
+            {data.socials?.length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {data.socials.map((social) => {
+                  const Icon = getSocialIcon(social.platform)
+                  return (
+                    <a
+                      key={social.id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 rounded-lg bg-brand-900 hover:bg-brand-800 text-white transition-colors"
+                      aria-label={social.label}
+                      title={social.label}
+                    >
+                      <Icon size={20} />
+                    </a>
+                  )
+                })}
+              </div>
+            )}
+
+            <div className="mt-6 space-y-2">
+              {data.email && (
+                <a
+                  href={`mailto:${data.email}`}
+                  className="flex items-center gap-2 text-sm hover:text-white transition-colors"
+                >
+                  <Mail size={14} />
+                  {data.email}
+                </a>
+              )}
+              {data.phone && (
+                <a
+                  href={`tel:${data.phone.replace(/\D/g, '')}`}
+                  className="flex items-center gap-2 text-sm hover:text-white transition-colors"
+                >
+                  <Phone size={14} />
+                  {data.phone}
+                </a>
+              )}
             </div>
-            <p className="mt-6 text-sm">
-              info@vastmedia.com
-            </p>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-brand-800 text-center text-xs text-brand-500">
-          &copy; {new Date().getFullYear()} Vast Media. All rights reserved.
+          &copy; {new Date().getFullYear()} {data.copyright}
         </div>
       </Container>
     </footer>

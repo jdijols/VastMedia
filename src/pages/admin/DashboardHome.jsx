@@ -5,6 +5,7 @@ import {
   MessageSquareQuote,
   FileText,
   Home,
+  PanelBottom,
   ExternalLink,
 } from 'lucide-react'
 
@@ -38,6 +39,12 @@ const sections = [
     icon: Home,
     title: 'Home Page',
     description: 'Edit hero text, service cards, and the call-to-action.',
+  },
+  {
+    to: '/admin/footer',
+    icon: PanelBottom,
+    title: 'Footer',
+    description: 'Edit footer text, contact info, and social media links.',
   },
 ]
 

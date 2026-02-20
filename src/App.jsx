@@ -20,6 +20,7 @@ import PricingManager from './pages/admin/PricingManager'
 import TestimonialsManager from './pages/admin/TestimonialsManager'
 import AboutEditor from './pages/admin/AboutEditor'
 import HomeEditor from './pages/admin/HomeEditor'
+import FooterEditor from './pages/admin/FooterEditor'
 
 export default function App() {
   return (
@@ -63,6 +64,7 @@ export default function App() {
         <Route path="testimonials" element={<TestimonialsManager />} />
         <Route path="about" element={<AboutEditor />} />
         <Route path="home" element={<HomeEditor />} />
+        <Route path="footer" element={<FooterEditor />} />
       </Route>
     </Routes>
   )

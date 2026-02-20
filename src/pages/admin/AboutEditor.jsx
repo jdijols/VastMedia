@@ -2,7 +2,6 @@ import { Plus, Trash2 } from 'lucide-react'
 import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
 import MediaUploader from '../../components/admin/MediaUploader'
-import { ICON_OPTIONS } from '../../lib/icons'
 
 export default function AboutEditor() {
   const { data, loading, saving, saved, error, dirty, update, save, reset } =
@@ -49,7 +48,7 @@ export default function AboutEditor() {
   function addStat() {
     setNested('stats', 'items', [
       ...stats.items,
-      { id: `stat-${Date.now()}`, icon: 'Camera', value: '', label: '' },
+      { id: `stat-${Date.now()}`, value: '', label: '' },
     ])
   }
 
@@ -249,19 +248,7 @@ export default function AboutEditor() {
           <div className="space-y-3">
             {stats.items.map((stat, i) => (
               <div key={stat.id} className="flex gap-3 items-start bg-brand-50 rounded-xl p-4">
-                <div className="grid gap-3 sm:grid-cols-3 flex-1">
-                  <div>
-                    <label className="admin-label">Icon</label>
-                    <select
-                      className="admin-input"
-                      value={stat.icon}
-                      onChange={(e) => updateStat(i, 'icon', e.target.value)}
-                    >
-                      {ICON_OPTIONS.map((name) => (
-                        <option key={name} value={name}>{name}</option>
-                      ))}
-                    </select>
-                  </div>
+                <div className="grid gap-3 sm:grid-cols-2 flex-1">
                   <div>
                     <label className="admin-label">Value</label>
                     <input

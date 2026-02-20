@@ -2,7 +2,6 @@ import Container from '../components/ui/Container'
 import SectionHeading from '../components/ui/SectionHeading'
 import Button from '../components/ui/Button'
 import { useContent } from '../hooks/useContent'
-import { getIcon } from '../lib/icons'
 
 export default function About() {
   const { data } = useContent('about')
@@ -73,20 +72,14 @@ export default function About() {
         <Container>
           <SectionHeading eyebrow={stats.eyebrow} title={stats.title} />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.items.map((stat) => {
-              const Icon = getIcon(stat.icon)
-              return (
-                <div key={stat.id || stat.label} className="text-center">
-                  <div className="inline-flex p-3 rounded-xl bg-brand-50 mb-4">
-                    <Icon size={24} className="text-brand-600" />
-                  </div>
-                  <p className="font-display text-3xl md:text-4xl font-bold text-brand-950">
-                    {stat.value}
-                  </p>
-                  <p className="text-sm text-brand-500 mt-1">{stat.label}</p>
-                </div>
-              )
-            })}
+            {stats.items.map((stat) => (
+              <div key={stat.id || stat.label} className="text-center">
+                <p className="font-display text-3xl md:text-4xl font-bold text-brand-950">
+                  {stat.value}
+                </p>
+                <p className="text-sm text-brand-500 mt-1">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>

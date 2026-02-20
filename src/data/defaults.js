@@ -260,8 +260,8 @@ export const DEFAULTS = {
   about: {
     intro: {
       eyebrow: 'About Vast Media',
-      title: 'Where Professionalism Meets',
-      titleAccent: 'Passion',
+      title: 'Uncompromising Detail.',
+      titleAccent: 'Nothing Short of Exceptional.',
       paragraphs: [
         "Welcome to Vast Media. Having called Austin home for the past four years, I've immersed myself in the dynamic culture and energy of this city — and it fuels everything I create. With nearly a decade of dedicated experience in photography, I bring a keen eye for detail and an unwavering commitment to excellence to every single project.",
         "For me, photography has never been just about pressing a shutter. Every image is a product of intentional craft — designed to encapsulate the essence, emotion, and authenticity of whatever stands before my lens. Whether it's a luxury listing that needs to sell, a portrait that tells someone's story, or a live event that deserves to be remembered, I approach every shoot with the same standard: nothing less than exceptional.",
@@ -456,4 +456,26 @@ export const DEFAULTS = {
       type: 'image',
     },
   ],
+
+  footer: {
+    description:
+      'Austin-based photography and videography. Bold visuals for real estate, events, portraits, and brands.',
+    email: 'info@vastmedia.com',
+    phone: '',
+    copyright: 'Vast Media. All rights reserved.',
+    socials: [
+      {
+        id: 'social-1',
+        platform: 'facebook',
+        url: 'https://www.facebook.com/michael.c.milam',
+        label: 'Facebook',
+      },
+      {
+        id: 'social-2',
+        platform: 'instagram',
+        url: 'https://www.instagram.com/vastmediatx',
+        label: 'Instagram',
+      },
+    ],
+  },
 }

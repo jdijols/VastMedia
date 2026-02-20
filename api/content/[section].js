@@ -32,6 +32,7 @@ export default async function handler(req, res) {
     'portfolio-videography',
     'portfolio-portraits',
     'portfolio-events',
+    'footer',
   ]
 
   if (!validSections.includes(section)) {

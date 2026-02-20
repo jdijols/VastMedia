@@ -6,6 +6,7 @@ import {
   MessageSquareQuote,
   FileText,
   Home,
+  PanelBottom,
   LogOut,
   Menu,
   X,
@@ -20,6 +21,7 @@ const links = [
   { to: '/admin/testimonials', icon: MessageSquareQuote, label: 'Testimonials' },
   { to: '/admin/about', icon: FileText, label: 'About Page' },
   { to: '/admin/home', icon: Home, label: 'Home Page' },
+  { to: '/admin/footer', icon: PanelBottom, label: 'Footer' },
 ]
 
 function NavItem({ to, icon: Icon, label, end, onClick }) {
