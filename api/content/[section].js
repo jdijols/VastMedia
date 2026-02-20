@@ -44,7 +44,8 @@ export default async function handler(req, res) {
       const data = await getBlob(section)
       res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=3600')
       return res.status(200).json(data || DEFAULTS[section])
-    } catch {
+    } catch (error) {
+      console.error('Blob get error:', error)
       return res.status(200).json(DEFAULTS[section])
     }
   }
@@ -62,7 +63,10 @@ export default async function handler(req, res) {
       })
       return res.status(200).json({ success: true, url: blob.url })
     } catch (error) {
-      return res.status(500).json({ error: 'Failed to save content' })
+      console.error('Blob put error:', error)
+      return res.status(500).json({
+        error: error?.message || 'Failed to save content',
+      })
     }
   }
 
