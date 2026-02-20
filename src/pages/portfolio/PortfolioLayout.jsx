@@ -16,7 +16,7 @@ export default function PortfolioLayout() {
         <SectionHeading
           eyebrow="Portfolio"
           title="Our Work"
-          description="Browse through our recent projects across real estate, videography, portraits, and events."
+          description="Browse through our recent projects across real estate, videography, events, and portraits."
         />
 
         <div className="flex flex-wrap justify-center gap-2 mb-12">

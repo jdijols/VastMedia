@@ -27,16 +27,14 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] min-h-[600px] flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800" />
         <img
           src={hero.backgroundImage}
           alt="Luxury real estate photography"
-          className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-950/80 via-transparent to-brand-950/30" />
 
         <Container className="relative z-10">
-          <div className="max-w-3xl">
+          <div className="max-w-2xl bg-gradient-to-br from-brand-950/85 to-brand-900/75 backdrop-blur-md rounded-2xl p-8 md:p-12 lg:p-14">
             <p className="text-brand-300 text-sm font-semibold uppercase tracking-[0.2em] mb-6">
               {hero.eyebrow}
             </p>
@@ -45,7 +43,7 @@ export default function Home() {
               <br />
               <span className="text-brand-400">{hero.titleAccent}</span>
             </h1>
-            <p className="text-brand-200 text-lg md:text-xl max-w-xl leading-relaxed mb-10">
+            <p className="text-brand-200 text-lg md:text-xl leading-relaxed mb-10">
               {hero.description}
             </p>
             <div className="flex flex-wrap gap-4">
