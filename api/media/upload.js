@@ -21,6 +21,7 @@ export default async function handler(req, res) {
         }
 
         return {
+          addRandomSuffix: true,
           allowedContentTypes: [
             'image/jpeg',
             'image/png',
