@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Plus, ChevronUp, ChevronDown, Pencil, Trash2 } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
 import MediaUploader from '../../components/admin/MediaUploader'
+import SortableList from '../../components/admin/SortableList'
 
 const CATEGORIES = [
   { key: 'portfolio-real-estate', label: 'Real Estate' },
@@ -97,14 +98,6 @@ function CategoryEditor({ sectionKey }) {
 
   const items = data || []
 
-  function moveItem(index, direction) {
-    const next = [...items]
-    const target = index + direction
-    if (target < 0 || target >= next.length) return
-    ;[next[index], next[target]] = [next[target], next[index]]
-    update(next)
-  }
-
   function deleteItem(id) {
     if (!confirm('Delete this portfolio item?')) return
     update(items.filter((it) => it.id !== id))
@@ -159,20 +152,18 @@ function CategoryEditor({ sectionKey }) {
         </div>
       )}
 
-      <div className="space-y-3">
-        {items.map((item, i) =>
+      <SortableList
+        items={items}
+        onReorder={update}
+        renderItem={(item) =>
           editingId === item.id ? (
             <ItemForm
-              key={item.id}
               item={item}
               onSave={saveItem}
               onCancel={() => setEditingId(null)}
             />
           ) : (
-            <div
-              key={item.id}
-              className="flex items-center gap-4 bg-white rounded-xl border border-brand-100 p-4"
-            >
+            <div className="flex items-center gap-4 bg-white rounded-xl border border-brand-100 p-4">
               {item.src && (
                 <img
                   src={item.src}
@@ -189,22 +180,6 @@ function CategoryEditor({ sectionKey }) {
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button
-                  onClick={() => moveItem(i, -1)}
-                  disabled={i === 0}
-                  className="admin-icon-btn"
-                  title="Move up"
-                >
-                  <ChevronUp size={16} />
-                </button>
-                <button
-                  onClick={() => moveItem(i, 1)}
-                  disabled={i === items.length - 1}
-                  className="admin-icon-btn"
-                  title="Move down"
-                >
-                  <ChevronDown size={16} />
-                </button>
                 <button
                   onClick={() => {
                     setEditingId(item.id)
@@ -225,8 +200,8 @@ function CategoryEditor({ sectionKey }) {
               </div>
             </div>
           )
-        )}
-      </div>
+        }
+      />
 
       {items.length === 0 && !adding && (
         <div className="text-center py-12 text-brand-400">

@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Plus, ChevronUp, ChevronDown, Pencil, Trash2, X, Star } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Star } from 'lucide-react'
 import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
+import SortableList from '../../components/admin/SortableList'
 import { ICON_OPTIONS } from '../../lib/icons'
 
 function ServiceForm({ item, onSave, onCancel, categories }) {
@@ -167,14 +168,9 @@ export default function PricingManager() {
   const allServices = data.services || []
   const filtered = allServices.filter((s) => s.category === activeCategory)
 
-  function moveItem(index, direction) {
-    const catItems = [...filtered]
-    const target = index + direction
-    if (target < 0 || target >= catItems.length) return
-    ;[catItems[index], catItems[target]] = [catItems[target], catItems[index]]
-
+  function handleReorder(reordered) {
     const others = allServices.filter((s) => s.category !== activeCategory)
-    update({ ...data, services: [...others, ...catItems] })
+    update({ ...data, services: [...others, ...reordered] })
   }
 
   function deleteItem(id) {
@@ -302,21 +298,19 @@ export default function PricingManager() {
         </div>
       )}
 
-      <div className="space-y-3">
-        {filtered.map((svc, i) =>
+      <SortableList
+        items={filtered}
+        onReorder={handleReorder}
+        renderItem={(svc) =>
           editingId === svc.id ? (
             <ServiceForm
-              key={svc.id}
               item={svc}
               onSave={saveItem}
               onCancel={() => setEditingId(null)}
               categories={categories}
             />
           ) : (
-            <div
-              key={svc.id}
-              className="flex items-center gap-4 bg-white rounded-xl border border-brand-100 p-4"
-            >
+            <div className="flex items-center gap-4 bg-white rounded-xl border border-brand-100 p-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <p className="font-medium text-brand-950 truncate">{svc.name}</p>
@@ -331,12 +325,6 @@ export default function PricingManager() {
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button onClick={() => moveItem(i, -1)} disabled={i === 0} className="admin-icon-btn" title="Move up">
-                  <ChevronUp size={16} />
-                </button>
-                <button onClick={() => moveItem(i, 1)} disabled={i === filtered.length - 1} className="admin-icon-btn" title="Move down">
-                  <ChevronDown size={16} />
-                </button>
                 <button onClick={() => { setEditingId(svc.id); setAdding(false) }} className="admin-icon-btn" title="Edit">
                   <Pencil size={16} />
                 </button>
@@ -346,8 +334,8 @@ export default function PricingManager() {
               </div>
             </div>
           )
-        )}
-      </div>
+        }
+      />
 
       {filtered.length === 0 && !adding && (
         <div className="text-center py-12 text-brand-400">
