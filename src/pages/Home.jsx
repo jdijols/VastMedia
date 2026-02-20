@@ -93,7 +93,7 @@ export default function Home() {
                       <img
                         src={service.image}
                         alt={service.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                       />
                     )}
                   </div>
@@ -110,6 +110,28 @@ export default function Home() {
           </div>
           <div className="text-center mt-10">
             <Button to="/pricing" variant="secondary">View All Services & Pricing</Button>
+          </div>
+        </Container>
+      </section>
+
+      {/* CTA */}
+      <section className="relative py-24 overflow-hidden">
+        <img
+          src={cta.backgroundImage}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <Container className="relative z-10">
+          <div className="bg-gradient-to-br from-brand-950/60 to-brand-900/45 backdrop-blur-sm rounded-3xl p-12 md:p-20 text-center">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
+              {cta.title}
+            </h2>
+            <p className="text-brand-300 text-lg max-w-xl mx-auto mb-8">
+              {cta.description}
+            </p>
+            <Button to={cta.buttonLink} size="lg" className="!bg-white !text-brand-950 hover:!bg-brand-100">
+              {cta.buttonText}
+            </Button>
           </div>
         </Container>
       </section>
@@ -183,28 +205,6 @@ export default function Home() {
           </Container>
         </section>
       )}
-
-      {/* CTA */}
-      <section className="relative py-24 overflow-hidden">
-        <img
-          src={cta.backgroundImage}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <Container className="relative z-10">
-          <div className="bg-gradient-to-br from-brand-950/60 to-brand-900/45 backdrop-blur-sm rounded-3xl p-12 md:p-20 text-center">
-            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-              {cta.title}
-            </h2>
-            <p className="text-brand-300 text-lg max-w-xl mx-auto mb-8">
-              {cta.description}
-            </p>
-            <Button to={cta.buttonLink} size="lg" className="!bg-white !text-brand-950 hover:!bg-brand-100">
-              {cta.buttonText}
-            </Button>
-          </div>
-        </Container>
-      </section>
     </>
   )
 }
