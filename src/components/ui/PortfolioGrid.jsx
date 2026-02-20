@@ -4,6 +4,14 @@ import MediaPreview from './MediaPreview'
 export default function PortfolioGrid({ items }) {
   const [previewItem, setPreviewItem] = useState(null)
 
+  if (!items) {
+    return (
+      <div className="flex justify-center py-24">
+        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

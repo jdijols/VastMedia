@@ -7,11 +7,12 @@ import { useContent } from '../hooks/useContent'
 import { getIcon } from '../lib/icons'
 
 export default function Home() {
-  const { data: homepage } = useContent('homepage')
-  const { data: testimonials } = useContent('testimonials')
+  const { data: homepage, loading: loadingHome } = useContent('homepage')
+  const { data: testimonials, loading: loadingTest } = useContent('testimonials')
 
-  const { hero, services, cta } = homepage
-  const count = testimonials.length
+  const loading = loadingHome || loadingTest
+  const { hero, services, cta } = homepage ?? {}
+  const count = testimonials?.length ?? 0
 
   const [current, setCurrent] = useState(0)
   const next = useCallback(() => setCurrent((c) => (c + 1) % count), [count])
@@ -22,6 +23,14 @@ export default function Home() {
     const id = setInterval(next, 6000)
     return () => clearInterval(id)
   }, [next, count])
+
+  if (loading || !homepage) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <>
@@ -79,7 +88,7 @@ export default function Home() {
                   key={service.id || service.title}
                   className="group bg-white rounded-2xl border border-brand-100 overflow-hidden hover:shadow-xl hover:border-brand-200 transition-all duration-300"
                 >
-                  <div className="relative h-48">
+                  <div className="h-48 overflow-hidden">
                     {service.image && (
                       <img
                         src={service.image}
@@ -87,7 +96,6 @@ export default function Home() {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-white via-white/30 to-transparent" />
                   </div>
                   <div className="px-8 pb-8 pt-5">
                     <div className="inline-flex p-3 rounded-xl bg-brand-50 group-hover:bg-brand-950 transition-colors duration-300 mb-5">

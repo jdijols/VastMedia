@@ -67,12 +67,20 @@ function ServiceCard({ service }) {
 }
 
 export default function Pricing() {
-  const { data } = useContent('pricing')
+  const { data, loading } = useContent('pricing')
   const [active, setActive] = useState('real-estate')
 
   const categories = data?.categories || []
   const allServices = data?.services || []
   const filtered = allServices.filter((s) => s.category === active)
+
+  if (loading || !data) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <section className="py-24">

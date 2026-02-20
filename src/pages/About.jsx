@@ -4,7 +4,16 @@ import Button from '../components/ui/Button'
 import { useContent } from '../hooks/useContent'
 
 export default function About() {
-  const { data } = useContent('about')
+  const { data, loading } = useContent('about')
+
+  if (loading || !data) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
+      </div>
+    )
+  }
+
   const { intro, austin, stats } = data
 
   return (

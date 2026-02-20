@@ -15,6 +15,8 @@ const nav = [
 export default function Footer() {
   const { data } = useContent('footer')
 
+  if (!data) return null
+
   return (
     <footer className="bg-brand-950 text-brand-300 mt-auto">
       <Container className="py-16">

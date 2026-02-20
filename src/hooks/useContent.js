@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { DEFAULTS } from '../data/defaults'
 
 export function useContent(section) {
-  const [data, setData] = useState(DEFAULTS[section] ?? null)
+  const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -11,9 +11,11 @@ export function useContent(section) {
     fetch(`/api/content/${section}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
-        if (!cancelled && json) setData(json)
+        if (!cancelled) setData(json ?? DEFAULTS[section] ?? null)
       })
-      .catch(() => {})
+      .catch(() => {
+        if (!cancelled) setData(DEFAULTS[section] ?? null)
+      })
       .finally(() => {
         if (!cancelled) setLoading(false)
       })
