@@ -5,8 +5,8 @@ import SectionHeading from '../../components/ui/SectionHeading'
 const tabs = [
   { label: 'Real Estate', to: '/portfolio' },
   { label: 'Videography', to: '/portfolio/videography' },
-  { label: 'Portraits', to: '/portfolio/portraits' },
   { label: 'Events', to: '/portfolio/events' },
+  { label: 'Portraits', to: '/portfolio/portraits' },
 ]
 
 export default function PortfolioLayout() {

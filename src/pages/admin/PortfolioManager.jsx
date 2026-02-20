@@ -7,8 +7,8 @@ import MediaUploader from '../../components/admin/MediaUploader'
 const CATEGORIES = [
   { key: 'portfolio-real-estate', label: 'Real Estate' },
   { key: 'portfolio-videography', label: 'Videography' },
-  { key: 'portfolio-portraits', label: 'Portraits' },
   { key: 'portfolio-events', label: 'Events' },
+  { key: 'portfolio-portraits', label: 'Portraits' },
 ]
 
 function ItemForm({ item, onSave, onCancel }) {
