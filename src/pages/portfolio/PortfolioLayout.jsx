@@ -43,7 +43,9 @@ export default function PortfolioLayout() {
         </nav>
       </Container>
 
-      <Outlet />
+      <Container>
+        <Outlet />
+      </Container>
     </section>
   )
 }
