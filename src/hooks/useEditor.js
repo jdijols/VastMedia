@@ -13,18 +13,31 @@ export function useEditor(section) {
   const savedTimer = useRef(null)
 
   useEffect(() => {
+    let cancelled = false
+
     contentApi
       .get(section)
       .then((json) => {
-        setData(json)
-        savedSnapshot.current = json
+        if (!cancelled) {
+          setData(json)
+          savedSnapshot.current = json
+        }
       })
       .catch(() => {
-        const fallback = DEFAULTS[section]
-        setData(fallback)
-        savedSnapshot.current = fallback
+        if (!cancelled) {
+          const fallback = DEFAULTS[section]
+          setData(fallback)
+          savedSnapshot.current = fallback
+        }
       })
-      .finally(() => setLoading(false))
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+      if (savedTimer.current) clearTimeout(savedTimer.current)
+    }
   }, [section])
 
   const update = useCallback((updater) => {

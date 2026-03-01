@@ -1,45 +1,49 @@
-import { useState, useEffect, useCallback } from 'react'
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { ChevronLeft, ChevronRight, Star, Pause, Play } from 'lucide-react'
 import Container from '../components/ui/Container'
 import SectionHeading from '../components/ui/SectionHeading'
 import Button from '../components/ui/Button'
+import Spinner from '../components/ui/Spinner'
 import { useContent } from '../hooks/useContent'
 import { getIcon } from '../lib/icons'
+import usePageTitle from '../hooks/usePageTitle'
 
 export default function Home() {
-  const { data: homepage, loading: loadingHome } = useContent('homepage')
-  const { data: testimonials, loading: loadingTest } = useContent('testimonials')
+  usePageTitle(null)
+  const { data: homepage, loading: loadingHomepage } = useContent('homepage')
+  const { data: testimonials, loading: loadingTestimonials } = useContent('testimonials')
 
-  const loading = loadingHome || loadingTest
+  const loading = loadingHomepage || loadingTestimonials
   const { hero, services, cta } = homepage ?? {}
   const count = testimonials?.length ?? 0
 
-  const [current, setCurrent] = useState(0)
-  const next = useCallback(() => setCurrent((c) => (c + 1) % count), [count])
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + count) % count), [count])
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [autoPlay, setAutoPlay] = useState(true)
+  const intervalRef = useRef(null)
+  const handleNextTestimonial = useCallback(() => setCurrentSlide((c) => (c + 1) % count), [count])
+  const handlePreviousTestimonial = useCallback(() => setCurrentSlide((c) => (c - 1 + count) % count), [count])
 
   useEffect(() => {
-    if (count === 0) return
-    const id = setInterval(next, 6000)
-    return () => clearInterval(id)
-  }, [next, count])
+    if (count === 0 || !autoPlay) return
+    intervalRef.current = setInterval(handleNextTestimonial, 6000)
+    return () => clearInterval(intervalRef.current)
+  }, [handleNextTestimonial, count, autoPlay])
 
   if (loading || !homepage) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner className="min-h-[60vh]" />
   }
 
   return (
     <>
       {/* Hero */}
-      <section className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] min-h-[600px] flex items-center overflow-hidden">
+      <section aria-label="Hero" className="relative h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] min-h-[600px] flex items-center overflow-hidden">
         <img
           src={hero.backgroundImage}
           alt="Luxury real estate photography"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
 
         <Container className="relative z-10 w-full">
@@ -73,12 +77,13 @@ export default function Home() {
       </section>
 
       {/* Services */}
-      <section className="py-24">
+      <section aria-labelledby="services-heading" className="py-24">
         <Container>
           <SectionHeading
             eyebrow={services.eyebrow}
             title={services.title}
             description={services.description}
+            id="services-heading"
           />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {services.items.map((service) => {
@@ -94,6 +99,8 @@ export default function Home() {
                         src={service.image}
                         alt={service.title}
                         className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )}
                   </div>
@@ -115,11 +122,13 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="relative py-24 overflow-hidden">
+      <section aria-label="Call to action" className="relative py-24 overflow-hidden">
         <img
           src={cta.backgroundImage}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
         <Container className="relative z-10">
           <div className="bg-gradient-to-br from-brand-950/60 to-brand-900/45 backdrop-blur-sm rounded-3xl p-12 md:p-20 text-center">
@@ -138,29 +147,31 @@ export default function Home() {
 
       {/* Testimonials */}
       {count > 0 && (
-        <section className="py-24 bg-white">
+        <section aria-labelledby="testimonials-heading" className="py-24 bg-white">
           <Container>
             <div className="text-center mb-12">
               <p className="text-sm font-semibold uppercase tracking-widest text-brand-500 mb-3">
                 Testimonials
               </p>
-              <h2 className="font-display text-3xl md:text-4xl font-semibold text-brand-950">
+              <h2 id="testimonials-heading" className="font-display text-3xl md:text-4xl font-semibold text-brand-950">
                 What Our Clients Say
               </h2>
             </div>
 
-            <div className="relative max-w-3xl mx-auto">
-              <div className="overflow-hidden">
+            <div className="relative max-w-3xl mx-auto" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
+              <div aria-live="polite" aria-atomic="true" className="overflow-hidden">
                 <div
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${current * 100}%)` }}
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  role="tabpanel"
+                  aria-label={`Testimonial ${currentSlide + 1} of ${count}`}
                 >
                   {testimonials.map((t, i) => (
-                    <div key={t.id || i} className="w-full flex-shrink-0 px-4">
+                    <div key={t.id || i} className="w-full flex-shrink-0 px-4" aria-hidden={i !== currentSlide}>
                       <div className="bg-brand-50 rounded-2xl p-8 md:p-12 text-center">
-                        <div className="flex justify-center gap-1 mb-6">
+                        <div className="flex justify-center gap-1 mb-6" role="img" aria-label={`${t.stars} out of 5 stars`}>
                           {Array.from({ length: t.stars }).map((_, j) => (
-                            <Star key={j} size={18} className="fill-brand-500 text-brand-500" />
+                            <Star key={j} size={18} className="fill-brand-500 text-brand-500" aria-hidden="true" />
                           ))}
                         </div>
                         <blockquote className="text-lg md:text-xl text-brand-700 leading-relaxed mb-8 italic">
@@ -175,31 +186,42 @@ export default function Home() {
               </div>
 
               <button
-                onClick={prev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 p-2 rounded-full bg-white shadow-lg border border-brand-100 text-brand-700 hover:bg-brand-50 transition-colors"
+                onClick={handlePreviousTestimonial}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 p-2 rounded-full bg-white shadow-lg border border-brand-100 text-brand-700 hover:bg-brand-50 transition-colors cursor-pointer"
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft size={20} />
               </button>
               <button
-                onClick={next}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 p-2 rounded-full bg-white shadow-lg border border-brand-100 text-brand-700 hover:bg-brand-50 transition-colors"
+                onClick={handleNextTestimonial}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 p-2 rounded-full bg-white shadow-lg border border-brand-100 text-brand-700 hover:bg-brand-50 transition-colors cursor-pointer"
                 aria-label="Next testimonial"
               >
                 <ChevronRight size={20} />
               </button>
 
-              <div className="flex justify-center gap-2 mt-8">
-                {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrent(i)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i === current ? 'bg-brand-950 w-6' : 'bg-brand-300'
-                    }`}
-                    aria-label={`Go to testimonial ${i + 1}`}
-                  />
-                ))}
+              <div className="flex justify-center items-center gap-2 mt-8">
+                <button
+                  onClick={() => setAutoPlay(!autoPlay)}
+                  className="p-1.5 rounded-full text-brand-500 hover:bg-brand-100 transition-colors cursor-pointer"
+                  aria-label={autoPlay ? 'Pause auto-rotation' : 'Resume auto-rotation'}
+                >
+                  {autoPlay ? <Pause size={14} /> : <Play size={14} />}
+                </button>
+                <div role="tablist" aria-label="Testimonial indicators" className="flex gap-2">
+                  {testimonials.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentSlide(i)}
+                      role="tab"
+                      aria-selected={i === currentSlide}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                        i === currentSlide ? 'bg-brand-950 w-6' : 'bg-brand-300'
+                      }`}
+                      aria-label={`Go to testimonial ${i + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </Container>

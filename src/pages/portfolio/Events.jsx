@@ -1,7 +1,6 @@
-import PortfolioGrid from '../../components/ui/PortfolioGrid'
-import { useContent } from '../../hooks/useContent'
+import PortfolioCategoryPage from '../../components/portfolio/PortfolioCategoryPage'
+import StackedCarouselLayout from '../../components/portfolio/StackedCarouselLayout'
 
 export default function Events() {
-  const { data: items } = useContent('portfolio-events')
-  return <PortfolioGrid items={items} />
+  return <PortfolioCategoryPage section="portfolio-events" layout={StackedCarouselLayout} />
 }

@@ -3,40 +3,38 @@ import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
 import MediaUploader from '../../components/admin/MediaUploader'
 import { ICON_OPTIONS } from '../../lib/icons'
+import Spinner from '../../components/ui/Spinner'
+import ErrorAlert from '../../components/ui/ErrorAlert'
 
 export default function HomeEditor() {
   const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor('homepage')
 
   if (loading || !data) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner />
   }
 
   const { hero, services, cta } = data
 
-  function setSection(section, key, value) {
+  function updateSection(section, key, value) {
     update({ ...data, [section]: { ...data[section], [key]: value } })
   }
 
   function updateServiceItem(index, key, value) {
     const items = [...services.items]
     items[index] = { ...items[index], [key]: value }
-    setSection('services', 'items', items)
+    updateSection('services', 'items', items)
   }
 
   function addServiceItem() {
-    setSection('services', 'items', [
+    updateSection('services', 'items', [
       ...services.items,
       { id: `svc-${Date.now()}`, icon: 'Camera', title: '', description: '', image: '' },
     ])
   }
 
   function removeServiceItem(index) {
-    setSection(
+    updateSection(
       'services',
       'items',
       services.items.filter((_, i) => i !== index)
@@ -52,11 +50,7 @@ export default function HomeEditor() {
         <p className="text-brand-500 mt-2">Edit your home page content.</p>
       </div>
 
-      {error && (
-        <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">
-          {error}
-        </div>
-      )}
+      <ErrorAlert message={error} />
 
       <div className="mb-6">
         <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
@@ -67,50 +61,55 @@ export default function HomeEditor() {
         <h2 className="font-semibold text-brand-950 mb-4">Hero Section</h2>
         <div className="space-y-4">
           <div>
-            <label className="admin-label">Eyebrow</label>
+            <label htmlFor="admin-hero-eyebrow" className="admin-label">Eyebrow</label>
             <input
+              id="admin-hero-eyebrow"
               className="admin-input"
               value={hero.eyebrow}
-              onChange={(e) => setSection('hero', 'eyebrow', e.target.value)}
+              onChange={(e) => updateSection('hero', 'eyebrow', e.target.value)}
             />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Title</label>
+              <label htmlFor="admin-hero-title" className="admin-label">Title</label>
               <input
+                id="admin-hero-title"
                 className="admin-input"
                 value={hero.title}
-                onChange={(e) => setSection('hero', 'title', e.target.value)}
+                onChange={(e) => updateSection('hero', 'title', e.target.value)}
               />
             </div>
             <div>
-              <label className="admin-label">Title Accent (colored word)</label>
+              <label htmlFor="admin-hero-title-accent" className="admin-label">Title Accent (colored word)</label>
               <input
+                id="admin-hero-title-accent"
                 className="admin-input"
                 value={hero.titleAccent}
-                onChange={(e) => setSection('hero', 'titleAccent', e.target.value)}
+                onChange={(e) => updateSection('hero', 'titleAccent', e.target.value)}
               />
             </div>
           </div>
 
           <div>
-            <label className="admin-label">Description</label>
+            <label htmlFor="admin-hero-description" className="admin-label">Description</label>
             <textarea
+              id="admin-hero-description"
               className="admin-input min-h-[80px]"
               value={hero.description}
-              onChange={(e) => setSection('hero', 'description', e.target.value)}
+              onChange={(e) => updateSection('hero', 'description', e.target.value)}
             />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Primary CTA Text</label>
+              <label htmlFor="admin-hero-cta-primary-text" className="admin-label">Primary CTA Text</label>
               <input
+                id="admin-hero-cta-primary-text"
                 className="admin-input"
                 value={hero.ctaPrimary?.text || ''}
                 onChange={(e) =>
-                  setSection('hero', 'ctaPrimary', {
+                  updateSection('hero', 'ctaPrimary', {
                     ...hero.ctaPrimary,
                     text: e.target.value,
                   })
@@ -118,12 +117,13 @@ export default function HomeEditor() {
               />
             </div>
             <div>
-              <label className="admin-label">Primary CTA Link</label>
+              <label htmlFor="admin-hero-cta-primary-link" className="admin-label">Primary CTA Link</label>
               <input
+                id="admin-hero-cta-primary-link"
                 className="admin-input"
                 value={hero.ctaPrimary?.link || ''}
                 onChange={(e) =>
-                  setSection('hero', 'ctaPrimary', {
+                  updateSection('hero', 'ctaPrimary', {
                     ...hero.ctaPrimary,
                     link: e.target.value,
                   })
@@ -134,12 +134,13 @@ export default function HomeEditor() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Secondary CTA Text</label>
+              <label htmlFor="admin-hero-cta-secondary-text" className="admin-label">Secondary CTA Text</label>
               <input
+                id="admin-hero-cta-secondary-text"
                 className="admin-input"
                 value={hero.ctaSecondary?.text || ''}
                 onChange={(e) =>
-                  setSection('hero', 'ctaSecondary', {
+                  updateSection('hero', 'ctaSecondary', {
                     ...hero.ctaSecondary,
                     text: e.target.value,
                   })
@@ -147,12 +148,13 @@ export default function HomeEditor() {
               />
             </div>
             <div>
-              <label className="admin-label">Secondary CTA Link</label>
+              <label htmlFor="admin-hero-cta-secondary-link" className="admin-label">Secondary CTA Link</label>
               <input
+                id="admin-hero-cta-secondary-link"
                 className="admin-input"
                 value={hero.ctaSecondary?.link || ''}
                 onChange={(e) =>
-                  setSection('hero', 'ctaSecondary', {
+                  updateSection('hero', 'ctaSecondary', {
                     ...hero.ctaSecondary,
                     link: e.target.value,
                   })
@@ -165,7 +167,7 @@ export default function HomeEditor() {
             <label className="admin-label">Background Image</label>
             <MediaUploader
               value={hero.backgroundImage}
-              onChange={(url) => setSection('hero', 'backgroundImage', url)}
+              onChange={(url) => updateSection('hero', 'backgroundImage', url)}
               accept="image/*"
             />
           </div>
@@ -180,30 +182,33 @@ export default function HomeEditor() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Eyebrow</label>
+              <label htmlFor="admin-services-eyebrow" className="admin-label">Eyebrow</label>
               <input
+                id="admin-services-eyebrow"
                 className="admin-input"
                 value={services.eyebrow}
-                onChange={(e) => setSection('services', 'eyebrow', e.target.value)}
+                onChange={(e) => updateSection('services', 'eyebrow', e.target.value)}
               />
             </div>
             <div>
-              <label className="admin-label">Title</label>
+              <label htmlFor="admin-services-title" className="admin-label">Title</label>
               <input
+                id="admin-services-title"
                 className="admin-input"
                 value={services.title}
-                onChange={(e) => setSection('services', 'title', e.target.value)}
+                onChange={(e) => updateSection('services', 'title', e.target.value)}
               />
             </div>
           </div>
 
           <div>
-            <label className="admin-label">Description</label>
+            <label htmlFor="admin-services-description" className="admin-label">Description</label>
             <textarea
+              id="admin-services-description"
               className="admin-input min-h-[60px]"
               value={services.description}
               onChange={(e) =>
-                setSection('services', 'description', e.target.value)
+                updateSection('services', 'description', e.target.value)
               }
             />
           </div>
@@ -218,8 +223,9 @@ export default function HomeEditor() {
                 >
                   <div className="grid gap-3 sm:grid-cols-3">
                     <div>
-                      <label className="admin-label">Icon</label>
+                      <label htmlFor={`admin-service-${i}-icon`} className="admin-label">Icon</label>
                       <select
+                        id={`admin-service-${i}-icon`}
                         className="admin-input"
                         value={item.icon}
                         onChange={(e) => updateServiceItem(i, 'icon', e.target.value)}
@@ -230,8 +236,9 @@ export default function HomeEditor() {
                       </select>
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="admin-label">Title</label>
+                      <label htmlFor={`admin-service-${i}-title`} className="admin-label">Title</label>
                       <input
+                        id={`admin-service-${i}-title`}
                         className="admin-input"
                         value={item.title}
                         onChange={(e) => updateServiceItem(i, 'title', e.target.value)}
@@ -240,8 +247,9 @@ export default function HomeEditor() {
                   </div>
                   <div className="flex gap-2">
                     <div className="flex-1">
-                      <label className="admin-label">Description</label>
+                      <label htmlFor={`admin-service-${i}-description`} className="admin-label">Description</label>
                       <textarea
+                        id={`admin-service-${i}-description`}
                         className="admin-input min-h-[60px]"
                         value={item.description}
                         onChange={(e) =>
@@ -252,6 +260,7 @@ export default function HomeEditor() {
                     <button
                       onClick={() => removeServiceItem(i)}
                       className="admin-icon-btn text-red-500 hover:bg-red-50 self-end mb-1"
+                      aria-label="Remove service card"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -284,36 +293,40 @@ export default function HomeEditor() {
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="admin-label">Title</label>
+            <label htmlFor="admin-cta-title" className="admin-label">Title</label>
             <input
+              id="admin-cta-title"
               className="admin-input"
               value={cta.title}
-              onChange={(e) => setSection('cta', 'title', e.target.value)}
+              onChange={(e) => updateSection('cta', 'title', e.target.value)}
             />
           </div>
           <div>
-            <label className="admin-label">Description</label>
+            <label htmlFor="admin-cta-description" className="admin-label">Description</label>
             <textarea
+              id="admin-cta-description"
               className="admin-input min-h-[60px]"
               value={cta.description}
-              onChange={(e) => setSection('cta', 'description', e.target.value)}
+              onChange={(e) => updateSection('cta', 'description', e.target.value)}
             />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Button Text</label>
+              <label htmlFor="admin-cta-button-text" className="admin-label">Button Text</label>
               <input
+                id="admin-cta-button-text"
                 className="admin-input"
                 value={cta.buttonText}
-                onChange={(e) => setSection('cta', 'buttonText', e.target.value)}
+                onChange={(e) => updateSection('cta', 'buttonText', e.target.value)}
               />
             </div>
             <div>
-              <label className="admin-label">Button Link</label>
+              <label htmlFor="admin-cta-button-link" className="admin-label">Button Link</label>
               <input
+                id="admin-cta-button-link"
                 className="admin-input"
                 value={cta.buttonLink}
-                onChange={(e) => setSection('cta', 'buttonLink', e.target.value)}
+                onChange={(e) => updateSection('cta', 'buttonLink', e.target.value)}
               />
             </div>
           </div>
@@ -322,7 +335,7 @@ export default function HomeEditor() {
             <label className="admin-label">Background Image</label>
             <MediaUploader
               value={cta.backgroundImage}
-              onChange={(url) => setSection('cta', 'backgroundImage', url)}
+              onChange={(url) => updateSection('cta', 'backgroundImage', url)}
               accept="image/*"
             />
           </div>

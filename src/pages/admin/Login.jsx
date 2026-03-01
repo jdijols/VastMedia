@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { Eye, EyeOff, Lock } from 'lucide-react'
+import ErrorAlert from '../../components/ui/ErrorAlert'
 
 export default function Login() {
   const [password, setPassword] = useState('')
@@ -27,7 +28,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-brand-950 px-4">
+    <main className="min-h-screen flex items-center justify-center bg-brand-950 px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <p className="font-display text-2xl font-bold text-white tracking-tight">
@@ -50,17 +51,14 @@ export default function Login() {
             Welcome Back
           </h1>
 
-          {error && (
-            <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">
-              {error}
-            </div>
-          )}
+          <ErrorAlert message={error} />
 
-          <label className="block text-sm font-medium text-brand-700 mb-2">
+          <label htmlFor="admin-password" className="block text-sm font-medium text-brand-700 mb-2">
             Password
           </label>
           <div className="relative mb-6">
             <input
+              id="admin-password"
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -73,7 +71,7 @@ export default function Login() {
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-400 hover:text-brand-600 cursor-pointer"
-              tabIndex={-1}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -88,6 +86,6 @@ export default function Login() {
           </button>
         </form>
       </div>
-    </div>
+    </main>
   )
 }

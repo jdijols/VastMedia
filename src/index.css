@@ -44,6 +44,26 @@ body {
   animation: fade-out 0.2s ease-out forwards;
 }
 
+@keyframes slide-in-from-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slide-in-from-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes slide-out-to-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+@keyframes slide-out-to-right {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+
 /* Admin dashboard utilities */
 .admin-label {
   @apply block text-sm font-medium text-brand-700 mb-1.5;

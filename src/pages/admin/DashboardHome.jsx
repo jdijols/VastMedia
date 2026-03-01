@@ -75,9 +75,9 @@ export default function DashboardHome() {
                   className="text-brand-600 group-hover:text-white transition-colors duration-200"
                 />
               </div>
-              <h3 className="font-semibold text-brand-950 mb-1">
+              <h2 className="font-semibold text-brand-950 mb-1">
                 {section.title}
-              </h3>
+              </h2>
               <p className="text-sm text-brand-500">{section.description}</p>
             </Link>
           )

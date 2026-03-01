@@ -18,10 +18,10 @@ export const SOCIAL_PLATFORMS = [
   { key: 'other', label: 'Other', icon: Globe },
 ]
 
-const iconMap = Object.fromEntries(
+const SOCIAL_ICON_MAP = Object.fromEntries(
   SOCIAL_PLATFORMS.map((p) => [p.key, p.icon])
 )
 
 export function getSocialIcon(platform) {
-  return iconMap[platform] || Globe
+  return SOCIAL_ICON_MAP[platform] || Globe
 }

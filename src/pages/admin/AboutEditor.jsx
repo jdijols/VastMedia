@@ -2,37 +2,35 @@ import { Plus, Trash2 } from 'lucide-react'
 import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
 import MediaUploader from '../../components/admin/MediaUploader'
+import Spinner from '../../components/ui/Spinner'
+import ErrorAlert from '../../components/ui/ErrorAlert'
 
 export default function AboutEditor() {
   const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor('about')
 
   if (loading || !data) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner />
   }
 
   const { intro, austin, stats } = data
 
-  function setNested(section, key, value) {
+  function updateSection(section, key, value) {
     update({ ...data, [section]: { ...data[section], [key]: value } })
   }
 
   function updateParagraph(section, index, value) {
     const paragraphs = [...data[section].paragraphs]
     paragraphs[index] = value
-    setNested(section, 'paragraphs', paragraphs)
+    updateSection(section, 'paragraphs', paragraphs)
   }
 
   function addParagraph(section) {
-    setNested(section, 'paragraphs', [...data[section].paragraphs, ''])
+    updateSection(section, 'paragraphs', [...data[section].paragraphs, ''])
   }
 
   function removeParagraph(section, index) {
-    setNested(
+    updateSection(
       section,
       'paragraphs',
       data[section].paragraphs.filter((_, i) => i !== index)
@@ -42,18 +40,18 @@ export default function AboutEditor() {
   function updateStat(index, key, value) {
     const items = [...stats.items]
     items[index] = { ...items[index], [key]: value }
-    setNested('stats', 'items', items)
+    updateSection('stats', 'items', items)
   }
 
   function addStat() {
-    setNested('stats', 'items', [
+    updateSection('stats', 'items', [
       ...stats.items,
       { id: `stat-${Date.now()}`, value: '', label: '' },
     ])
   }
 
   function removeStat(index) {
-    setNested(
+    updateSection(
       'stats',
       'items',
       stats.items.filter((_, i) => i !== index)
@@ -69,11 +67,7 @@ export default function AboutEditor() {
         <p className="text-brand-500 mt-2">Edit your about page content.</p>
       </div>
 
-      {error && (
-        <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">
-          {error}
-        </div>
-      )}
+      <ErrorAlert message={error} />
 
       <div className="mb-6">
         <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
@@ -85,27 +79,30 @@ export default function AboutEditor() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-3">
             <div>
-              <label className="admin-label">Eyebrow</label>
+              <label htmlFor="admin-about-intro-eyebrow" className="admin-label">Eyebrow</label>
               <input
+                id="admin-about-intro-eyebrow"
                 className="admin-input"
                 value={intro.eyebrow}
-                onChange={(e) => setNested('intro', 'eyebrow', e.target.value)}
+                onChange={(e) => updateSection('intro', 'eyebrow', e.target.value)}
               />
             </div>
             <div>
-              <label className="admin-label">Title</label>
+              <label htmlFor="admin-about-intro-title" className="admin-label">Title</label>
               <input
+                id="admin-about-intro-title"
                 className="admin-input"
                 value={intro.title}
-                onChange={(e) => setNested('intro', 'title', e.target.value)}
+                onChange={(e) => updateSection('intro', 'title', e.target.value)}
               />
             </div>
             <div>
-              <label className="admin-label">Title Accent</label>
+              <label htmlFor="admin-about-intro-accent" className="admin-label">Title Accent</label>
               <input
+                id="admin-about-intro-accent"
                 className="admin-input"
                 value={intro.titleAccent}
-                onChange={(e) => setNested('intro', 'titleAccent', e.target.value)}
+                onChange={(e) => updateSection('intro', 'titleAccent', e.target.value)}
               />
             </div>
           </div>
@@ -123,6 +120,7 @@ export default function AboutEditor() {
                   <button
                     onClick={() => removeParagraph('intro', i)}
                     className="admin-icon-btn text-red-500 hover:bg-red-50 self-start mt-1"
+                    aria-label="Remove paragraph"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -141,29 +139,31 @@ export default function AboutEditor() {
             <label className="admin-label">Photo</label>
             <MediaUploader
               value={intro.image}
-              onChange={(url) => setNested('intro', 'image', url)}
+              onChange={(url) => updateSection('intro', 'image', url)}
               accept="image/*"
             />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Badge Value</label>
+              <label htmlFor="admin-about-badge-value" className="admin-label">Badge Value</label>
               <input
+                id="admin-about-badge-value"
                 className="admin-input"
                 value={intro.badge?.value || ''}
                 onChange={(e) =>
-                  setNested('intro', 'badge', { ...intro.badge, value: e.target.value })
+                  updateSection('intro', 'badge', { ...intro.badge, value: e.target.value })
                 }
               />
             </div>
             <div>
-              <label className="admin-label">Badge Label</label>
+              <label htmlFor="admin-about-badge-label" className="admin-label">Badge Label</label>
               <input
+                id="admin-about-badge-label"
                 className="admin-input"
                 value={intro.badge?.label || ''}
                 onChange={(e) =>
-                  setNested('intro', 'badge', { ...intro.badge, label: e.target.value })
+                  updateSection('intro', 'badge', { ...intro.badge, label: e.target.value })
                 }
               />
             </div>
@@ -177,19 +177,21 @@ export default function AboutEditor() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Eyebrow</label>
+              <label htmlFor="admin-about-austin-eyebrow" className="admin-label">Eyebrow</label>
               <input
+                id="admin-about-austin-eyebrow"
                 className="admin-input"
                 value={austin.eyebrow}
-                onChange={(e) => setNested('austin', 'eyebrow', e.target.value)}
+                onChange={(e) => updateSection('austin', 'eyebrow', e.target.value)}
               />
             </div>
             <div>
-              <label className="admin-label">Title</label>
+              <label htmlFor="admin-about-austin-title" className="admin-label">Title</label>
               <input
+                id="admin-about-austin-title"
                 className="admin-input"
                 value={austin.title}
-                onChange={(e) => setNested('austin', 'title', e.target.value)}
+                onChange={(e) => updateSection('austin', 'title', e.target.value)}
               />
             </div>
           </div>
@@ -206,6 +208,7 @@ export default function AboutEditor() {
                   <button
                     onClick={() => removeParagraph('austin', i)}
                     className="admin-icon-btn text-red-500 hover:bg-red-50 self-start mt-1"
+                    aria-label="Remove paragraph"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -228,19 +231,21 @@ export default function AboutEditor() {
         <div className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="admin-label">Eyebrow</label>
+              <label htmlFor="admin-about-stats-eyebrow" className="admin-label">Eyebrow</label>
               <input
+                id="admin-about-stats-eyebrow"
                 className="admin-input"
                 value={stats.eyebrow}
-                onChange={(e) => setNested('stats', 'eyebrow', e.target.value)}
+                onChange={(e) => updateSection('stats', 'eyebrow', e.target.value)}
               />
             </div>
             <div>
-              <label className="admin-label">Title</label>
+              <label htmlFor="admin-about-stats-title" className="admin-label">Title</label>
               <input
+                id="admin-about-stats-title"
                 className="admin-input"
                 value={stats.title}
-                onChange={(e) => setNested('stats', 'title', e.target.value)}
+                onChange={(e) => updateSection('stats', 'title', e.target.value)}
               />
             </div>
           </div>
@@ -250,16 +255,18 @@ export default function AboutEditor() {
               <div key={stat.id} className="flex gap-3 items-start bg-brand-50 rounded-xl p-4">
                 <div className="grid gap-3 sm:grid-cols-2 flex-1">
                   <div>
-                    <label className="admin-label">Value</label>
+                    <label htmlFor={`admin-about-stat-${i}-value`} className="admin-label">Value</label>
                     <input
+                      id={`admin-about-stat-${i}-value`}
                       className="admin-input"
                       value={stat.value}
                       onChange={(e) => updateStat(i, 'value', e.target.value)}
                     />
                   </div>
                   <div>
-                    <label className="admin-label">Label</label>
+                    <label htmlFor={`admin-about-stat-${i}-label`} className="admin-label">Label</label>
                     <input
+                      id={`admin-about-stat-${i}-label`}
                       className="admin-input"
                       value={stat.label}
                       onChange={(e) => updateStat(i, 'label', e.target.value)}
@@ -269,6 +276,7 @@ export default function AboutEditor() {
                 <button
                   onClick={() => removeStat(i)}
                   className="admin-icon-btn text-red-500 hover:bg-red-50 mt-6"
+                  aria-label="Remove stat"
                 >
                   <Trash2 size={14} />
                 </button>

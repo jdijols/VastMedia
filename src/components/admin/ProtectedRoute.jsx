@@ -6,8 +6,9 @@ export default function ProtectedRoute({ children }) {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-brand-50">
+      <div className="min-h-screen flex items-center justify-center bg-brand-50" role="status" aria-label="Verifying authentication">
         <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
+        <span className="sr-only">Verifying authentication</span>
       </div>
     )
   }

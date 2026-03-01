@@ -4,6 +4,8 @@ import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
 import SortableList from '../../components/admin/SortableList'
 import { ICON_OPTIONS } from '../../lib/icons'
+import Spinner from '../../components/ui/Spinner'
+import ErrorAlert from '../../components/ui/ErrorAlert'
 
 function ServiceForm({ item, onSave, onCancel, categories }) {
   const [form, setForm] = useState({ ...item, features: [...(item.features || [])] })
@@ -25,8 +27,9 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
     <div className="bg-brand-50 rounded-xl p-6 space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="admin-label">Service Name</label>
+          <label htmlFor="admin-service-name" className="admin-label">Service Name</label>
           <input
+            id="admin-service-name"
             className="admin-input"
             value={form.name}
             onChange={(e) => set('name', e.target.value)}
@@ -34,8 +37,9 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
           />
         </div>
         <div>
-          <label className="admin-label">Price</label>
+          <label htmlFor="admin-service-price" className="admin-label">Price</label>
           <input
+            id="admin-service-price"
             className="admin-input"
             value={form.price}
             onChange={(e) => set('price', e.target.value)}
@@ -46,8 +50,9 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="admin-label">Category</label>
+          <label htmlFor="admin-service-category" className="admin-label">Category</label>
           <select
+            id="admin-service-category"
             className="admin-input"
             value={form.category}
             onChange={(e) => set('category', e.target.value)}
@@ -60,8 +65,9 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
           </select>
         </div>
         <div>
-          <label className="admin-label">Icon</label>
+          <label htmlFor="admin-service-icon" className="admin-label">Icon</label>
           <select
+            id="admin-service-icon"
             className="admin-input"
             value={form.icon}
             onChange={(e) => set('icon', e.target.value)}
@@ -76,8 +82,9 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
       </div>
 
       <div>
-        <label className="admin-label">Description</label>
+        <label htmlFor="admin-service-description" className="admin-label">Description</label>
         <textarea
+          id="admin-service-description"
           className="admin-input min-h-[80px]"
           value={form.description}
           onChange={(e) => set('description', e.target.value)}
@@ -103,6 +110,7 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
                 type="button"
                 onClick={() => removeFeature(i)}
                 className="admin-icon-btn text-red-500 hover:bg-red-50"
+                aria-label="Remove feature"
               >
                 <X size={14} />
               </button>
@@ -111,6 +119,7 @@ function ServiceForm({ item, onSave, onCancel, categories }) {
         </div>
         <div className="flex gap-2">
           <input
+            id="admin-service-new-feature"
             className="admin-input flex-1"
             value={newFeature}
             onChange={(e) => setNewFeature(e.target.value)}
@@ -157,11 +166,7 @@ export default function PricingManager() {
   const [activeCategory, setActiveCategory] = useState('real-estate')
 
   if (loading || !data) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner />
   }
 
   const categories = data.categories || []
@@ -208,8 +213,9 @@ export default function PricingManager() {
         <h2 className="font-semibold text-brand-950 mb-4">Page Heading</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="admin-label">Eyebrow</label>
+            <label htmlFor="admin-pricing-heading-eyebrow" className="admin-label">Eyebrow</label>
             <input
+              id="admin-pricing-heading-eyebrow"
               className="admin-input"
               value={data.heading?.eyebrow || ''}
               onChange={(e) =>
@@ -218,8 +224,9 @@ export default function PricingManager() {
             />
           </div>
           <div>
-            <label className="admin-label">Title</label>
+            <label htmlFor="admin-pricing-heading-title" className="admin-label">Title</label>
             <input
+              id="admin-pricing-heading-title"
               className="admin-input"
               value={data.heading?.title || ''}
               onChange={(e) =>
@@ -229,8 +236,9 @@ export default function PricingManager() {
           </div>
         </div>
         <div className="mt-4">
-          <label className="admin-label">Description</label>
+          <label htmlFor="admin-pricing-heading-description" className="admin-label">Description</label>
           <textarea
+            id="admin-pricing-heading-description"
             className="admin-input min-h-[60px]"
             value={data.heading?.description || ''}
             onChange={(e) =>
@@ -243,17 +251,15 @@ export default function PricingManager() {
         </div>
       </div>
 
-      {error && (
-        <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">
-          {error}
-        </div>
-      )}
+      <ErrorAlert message={error} />
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label="Pricing categories">
         {categories.map((cat) => (
           <button
             key={cat.key}
             onClick={() => setActiveCategory(cat.key)}
+            role="tab"
+            aria-selected={activeCategory === cat.key}
             className={`px-4 py-2 text-sm font-medium rounded-full transition-colors cursor-pointer ${
               activeCategory === cat.key
                 ? 'bg-brand-950 text-white'
@@ -325,10 +331,10 @@ export default function PricingManager() {
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button onClick={() => { setEditingId(svc.id); setAdding(false) }} className="admin-icon-btn" title="Edit">
+                <button onClick={() => { setEditingId(svc.id); setAdding(false) }} className="admin-icon-btn" aria-label="Edit service">
                   <Pencil size={16} />
                 </button>
-                <button onClick={() => deleteItem(svc.id)} className="admin-icon-btn text-red-500 hover:bg-red-50" title="Delete">
+                <button onClick={() => deleteItem(svc.id)} className="admin-icon-btn text-red-500 hover:bg-red-50" aria-label="Delete service">
                   <Trash2 size={16} />
                 </button>
               </div>

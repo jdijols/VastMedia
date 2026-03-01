@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -21,20 +22,23 @@ export default function SortableList({ items, onReorder, renderItem }) {
     })
   )
 
-  function handleDragEnd(event) {
-    const { active, over } = event
-    if (!over || active.id === over.id) return
+  const handleDragEnd = useCallback(
+    (event) => {
+      const { active, over } = event
+      if (!over || active.id === over.id) return
 
-    const oldIndex = items.findIndex((item) => item.id === active.id)
-    const newIndex = items.findIndex((item) => item.id === over.id)
+      const oldIndex = items.findIndex((item) => item.id === active.id)
+      const newIndex = items.findIndex((item) => item.id === over.id)
 
-    if (oldIndex === -1 || newIndex === -1) return
+      if (oldIndex === -1 || newIndex === -1) return
 
-    const next = [...items]
-    const [moved] = next.splice(oldIndex, 1)
-    next.splice(newIndex, 0, moved)
-    onReorder(next)
-  }
+      const next = [...items]
+      const [moved] = next.splice(oldIndex, 1)
+      next.splice(newIndex, 0, moved)
+      onReorder(next)
+    },
+    [items, onReorder],
+  )
 
   return (
     <DndContext

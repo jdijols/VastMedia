@@ -1,24 +1,23 @@
 import Container from '../components/ui/Container'
 import SectionHeading from '../components/ui/SectionHeading'
 import Button from '../components/ui/Button'
+import Spinner from '../components/ui/Spinner'
 import { useContent } from '../hooks/useContent'
+import usePageTitle from '../hooks/usePageTitle'
 
 export default function About() {
+  usePageTitle('About')
   const { data, loading } = useContent('about')
 
   if (loading || !data) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner className="min-h-[60vh]" />
   }
 
   const { intro, austin, stats } = data
 
   return (
     <>
-      <section className="py-24">
+      <section aria-label="About the photographer" className="py-24">
         <Container>
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
@@ -59,7 +58,7 @@ export default function About() {
       </section>
 
       {/* Austin Identity */}
-      <section className="py-24 bg-white">
+      <section aria-label="Austin identity" className="py-24 bg-white">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-brand-500 mb-3">
@@ -85,9 +84,9 @@ export default function About() {
         </Container>
       </section>
 
-      <section className="py-24">
+      <section aria-labelledby="stats-heading" className="py-24">
         <Container>
-          <SectionHeading eyebrow={stats.eyebrow} title={stats.title} />
+          <SectionHeading eyebrow={stats.eyebrow} title={stats.title} id="stats-heading" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.items.map((stat) => (
               <div key={stat.id || stat.label} className="text-center">

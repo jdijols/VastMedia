@@ -1,7 +1,6 @@
-import PortfolioGrid from '../../components/ui/PortfolioGrid'
-import { useContent } from '../../hooks/useContent'
+import PortfolioCategoryPage from '../../components/portfolio/PortfolioCategoryPage'
+import GalleryLayout from '../../components/portfolio/GalleryLayout'
 
 export default function Portraits() {
-  const { data: items } = useContent('portfolio-portraits')
-  return <PortfolioGrid items={items} />
+  return <PortfolioCategoryPage section="portfolio-portraits" layout={GalleryLayout} />
 }

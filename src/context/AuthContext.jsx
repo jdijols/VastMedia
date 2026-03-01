@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react'
 import { auth as authApi } from '../lib/admin-api'
 
 const AuthContext = createContext(null)
@@ -25,15 +25,20 @@ export function AuthProvider({ children }) {
     setAuthenticated(false)
   }, [])
 
+  const value = useMemo(
+    () => ({ authenticated, checking, login, logout }),
+    [authenticated, checking, login, logout],
+  )
+
   return (
-    <AuthContext.Provider value={{ authenticated, checking, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   )
 }
 
 export function useAuth() {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
-  return ctx
+  const context = useContext(AuthContext)
+  if (!context) throw new Error('useAuth must be used within AuthProvider')
+  return context
 }

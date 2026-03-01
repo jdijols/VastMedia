@@ -34,18 +34,20 @@ export default function Footer() {
             <h4 className="text-white font-semibold text-sm uppercase tracking-widest mb-4">
               Navigation
             </h4>
-            <ul className="space-y-2">
-              {nav.map((link) => (
-                <li key={link.to}>
-                  <Link
-                    to={link.to}
-                    className="text-sm hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <nav aria-label="Footer navigation">
+              <ul className="space-y-2">
+                {nav.map((link) => (
+                  <li key={link.to}>
+                    <Link
+                      to={link.to}
+                      className="text-sm hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
           <div>
@@ -64,7 +66,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-brand-900 hover:bg-brand-800 text-white transition-colors"
-                      aria-label={social.label}
+                      aria-label={`${social.label || social.platform} (opens in new tab)`}
                       title={social.label}
                     >
                       <Icon size={20} />

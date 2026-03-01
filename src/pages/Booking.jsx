@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Send, CheckCircle } from 'lucide-react'
 import Container from '../components/ui/Container'
 import SectionHeading from '../components/ui/SectionHeading'
 import Button from '../components/ui/Button'
+import usePageTitle from '../hooks/usePageTitle'
 
 const serviceOptions = [
   'Property Photos',
@@ -41,8 +42,10 @@ const initialForm = {
 }
 
 export default function Booking() {
+  usePageTitle('Book a Session')
   const [searchParams] = useSearchParams()
   const preselected = searchParams.get('service')
+  const successRef = useRef(null)
 
   const [form, setForm] = useState(() => ({
     ...initialForm,
@@ -72,17 +75,23 @@ export default function Booking() {
     setSubmitted(true)
   }
 
+  useEffect(() => {
+    if (submitted && successRef.current) {
+      successRef.current.focus()
+    }
+  }, [submitted])
+
   if (submitted) {
     return (
-      <section className="py-24">
+      <section aria-label="Booking confirmation" className="py-24">
         <Container>
-          <div className="max-w-lg mx-auto text-center">
+          <div ref={successRef} tabIndex={-1} className="max-w-lg mx-auto text-center focus:outline-none" role="status">
             <div className="inline-flex p-4 rounded-full bg-green-50 mb-6">
-              <CheckCircle size={48} className="text-green-600" />
+              <CheckCircle size={48} className="text-green-600" aria-hidden="true" />
             </div>
-            <h2 className="font-display text-3xl font-semibold text-brand-950 mb-4">
+            <h1 className="font-display text-3xl font-semibold text-brand-950 mb-4">
               Booking Request Sent!
-            </h2>
+            </h1>
             <p className="text-brand-600 mb-8">
               Thank you, {form.firstName}! We&apos;ll review your request and get back to you within 24 hours.
             </p>
@@ -97,9 +106,11 @@ export default function Booking() {
     'w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-sm text-brand-950 placeholder:text-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors'
 
   return (
-    <section className="py-24">
+    <section aria-labelledby="booking-heading" className="py-24">
       <Container>
         <SectionHeading
+          as="h1"
+          id="booking-heading"
           eyebrow="Book a Session"
           title="Let's Create Something Amazing"
           description="Fill out the form below and we'll get back to you within 24 hours to confirm your booking."
@@ -185,6 +196,7 @@ export default function Booking() {
                       key={service}
                       type="button"
                       onClick={() => toggleService(service)}
+                      aria-pressed={selected}
                       className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${
                         selected
                           ? 'bg-brand-950 text-white border-brand-950'

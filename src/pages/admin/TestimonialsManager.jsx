@@ -3,6 +3,8 @@ import { Plus, Pencil, Trash2, Star } from 'lucide-react'
 import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
 import SortableList from '../../components/admin/SortableList'
+import Spinner from '../../components/ui/Spinner'
+import ErrorAlert from '../../components/ui/ErrorAlert'
 
 function TestimonialForm({ item, onSave, onCancel }) {
   const [form, setForm] = useState({ ...item })
@@ -12,8 +14,9 @@ function TestimonialForm({ item, onSave, onCancel }) {
     <div className="bg-brand-50 rounded-xl p-6 space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="admin-label">Client Name</label>
+          <label htmlFor="admin-testimonial-name" className="admin-label">Client Name</label>
           <input
+            id="admin-testimonial-name"
             className="admin-input"
             value={form.name}
             onChange={(e) => set('name', e.target.value)}
@@ -21,8 +24,9 @@ function TestimonialForm({ item, onSave, onCancel }) {
           />
         </div>
         <div>
-          <label className="admin-label">Role / Company</label>
+          <label htmlFor="admin-testimonial-role" className="admin-label">Role / Company</label>
           <input
+            id="admin-testimonial-role"
             className="admin-input"
             value={form.role}
             onChange={(e) => set('role', e.target.value)}
@@ -32,8 +36,9 @@ function TestimonialForm({ item, onSave, onCancel }) {
       </div>
 
       <div>
-        <label className="admin-label">Testimonial Text</label>
+        <label htmlFor="admin-testimonial-text" className="admin-label">Testimonial Text</label>
         <textarea
+          id="admin-testimonial-text"
           className="admin-input min-h-[100px]"
           value={form.text}
           onChange={(e) => set('text', e.target.value)}
@@ -50,6 +55,7 @@ function TestimonialForm({ item, onSave, onCancel }) {
               type="button"
               onClick={() => set('stars', n)}
               className="cursor-pointer p-1"
+              aria-label={`Set rating to ${n} star${n > 1 ? 's' : ''}`}
             >
               <Star
                 size={20}
@@ -83,11 +89,7 @@ export default function TestimonialsManager() {
   const [adding, setAdding] = useState(false)
 
   if (loading || !data) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner />
   }
 
   const items = data || []
@@ -119,11 +121,7 @@ export default function TestimonialsManager() {
         </p>
       </div>
 
-      {error && (
-        <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">
-          {error}
-        </div>
-      )}
+      <ErrorAlert message={error} />
 
       <div className="flex items-center justify-between mb-6">
         <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
@@ -169,21 +167,22 @@ export default function TestimonialsManager() {
                 <p className="text-sm text-brand-500 line-clamp-2">
                   &ldquo;{item.text}&rdquo;
                 </p>
-                <div className="flex gap-0.5 mt-2">
+                <div className="flex gap-0.5 mt-2" role="img" aria-label={`${item.stars} out of 5 stars`}>
                   {Array.from({ length: item.stars || 0 }).map((_, j) => (
                     <Star
                       key={j}
                       size={12}
                       className="fill-brand-500 text-brand-500"
+                      aria-hidden="true"
                     />
                   ))}
                 </div>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <button onClick={() => { setEditingId(item.id); setAdding(false) }} className="admin-icon-btn" title="Edit">
+                <button onClick={() => { setEditingId(item.id); setAdding(false) }} className="admin-icon-btn" aria-label="Edit testimonial">
                   <Pencil size={16} />
                 </button>
-                <button onClick={() => deleteItem(item.id)} className="admin-icon-btn text-red-500 hover:bg-red-50" title="Delete">
+                <button onClick={() => deleteItem(item.id)} className="admin-icon-btn text-red-500 hover:bg-red-50" aria-label="Delete testimonial">
                   <Trash2 size={16} />
                 </button>
               </div>

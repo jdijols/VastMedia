@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import Container from '../../components/ui/Container'
 import SectionHeading from '../../components/ui/SectionHeading'
+import usePageTitle from '../../hooks/usePageTitle'
 
 const tabs = [
   { label: 'Real Estate', to: '/portfolio' },
@@ -10,16 +11,19 @@ const tabs = [
 ]
 
 export default function PortfolioLayout() {
+  usePageTitle('Portfolio')
   return (
-    <section className="py-24">
+    <section aria-labelledby="portfolio-heading" className="pt-24 pb-0">
       <Container>
         <SectionHeading
+          as="h1"
+          id="portfolio-heading"
           eyebrow="Portfolio"
           title="Our Work"
           description="Browse through our recent projects across real estate, videography, events, and portraits."
         />
 
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <nav className="flex flex-wrap justify-center gap-2 mb-12" aria-label="Portfolio categories">
           {tabs.map((tab) => (
             <NavLink
               key={tab.to}
@@ -36,10 +40,10 @@ export default function PortfolioLayout() {
               {tab.label}
             </NavLink>
           ))}
-        </div>
-
-        <Outlet />
+        </nav>
       </Container>
+
+      <Outlet />
     </section>
   )
 }

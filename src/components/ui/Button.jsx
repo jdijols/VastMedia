@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const base =
-  'inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 cursor-pointer'
+  'inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2'
 
 const variants = {
   primary:
@@ -30,6 +30,11 @@ export default function Button({
   const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`
 
   if (to) return <Link to={to} className={classes} {...props}>{children}</Link>
-  if (href) return <a href={href} className={classes} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>
-  return <button className={classes} {...props}>{children}</button>
+  if (href) return (
+    <a href={href} className={classes} target="_blank" rel="noopener noreferrer" {...props}>
+      {children}
+      <span className="sr-only"> (opens in new tab)</span>
+    </a>
+  )
+  return <button type="button" className={classes} {...props}>{children}</button>
 }

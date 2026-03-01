@@ -1,7 +1,6 @@
-import PortfolioGrid from '../../components/ui/PortfolioGrid'
-import { useContent } from '../../hooks/useContent'
+import PortfolioCategoryPage from '../../components/portfolio/PortfolioCategoryPage'
+import CinematicLayout from '../../components/portfolio/CinematicLayout'
 
 export default function Videography() {
-  const { data: items } = useContent('portfolio-videography')
-  return <PortfolioGrid items={items} />
+  return <PortfolioCategoryPage section="portfolio-videography" layout={CinematicLayout} />
 }

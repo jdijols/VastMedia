@@ -28,6 +28,7 @@ export default function SortableItem({ id, children }) {
       <button
         type="button"
         className="touch-none p-1.5 rounded-lg text-brand-300 hover:text-brand-600 hover:bg-brand-100 cursor-grab active:cursor-grabbing transition-colors flex-shrink-0"
+        aria-label="Drag to reorder"
         {...attributes}
         {...listeners}
       >

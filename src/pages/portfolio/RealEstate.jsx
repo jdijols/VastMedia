@@ -1,7 +1,6 @@
-import PortfolioGrid from '../../components/ui/PortfolioGrid'
-import { useContent } from '../../hooks/useContent'
+import PortfolioCategoryPage from '../../components/portfolio/PortfolioCategoryPage'
+import ShowcaseLayout from '../../components/portfolio/ShowcaseLayout'
 
 export default function RealEstate() {
-  const { data: items } = useContent('portfolio-real-estate')
-  return <PortfolioGrid items={items} />
+  return <PortfolioCategoryPage section="portfolio-real-estate" layout={ShowcaseLayout} />
 }

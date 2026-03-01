@@ -57,7 +57,7 @@ export default function MediaUploader({ value, onChange, accept = 'image/*,video
               type="button"
               onClick={handleRemove}
               className="p-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors cursor-pointer"
-              title="Remove"
+              aria-label="Remove media"
             >
               <X size={14} />
             </button>

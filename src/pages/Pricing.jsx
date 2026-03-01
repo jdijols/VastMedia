@@ -3,8 +3,10 @@ import { Check } from 'lucide-react'
 import Container from '../components/ui/Container'
 import SectionHeading from '../components/ui/SectionHeading'
 import Button from '../components/ui/Button'
+import Spinner from '../components/ui/Spinner'
 import { useContent } from '../hooks/useContent'
 import { getIcon } from '../lib/icons'
+import usePageTitle from '../hooks/usePageTitle'
 
 function ServiceCard({ service }) {
   const Icon = getIcon(service.icon)
@@ -67,37 +69,39 @@ function ServiceCard({ service }) {
 }
 
 export default function Pricing() {
+  usePageTitle('Pricing')
   const { data, loading } = useContent('pricing')
-  const [active, setActive] = useState('real-estate')
+  const [activeCategory, setActiveCategory] = useState('real-estate')
 
   const categories = data?.categories || []
   const allServices = data?.services || []
-  const filtered = allServices.filter((s) => s.category === active)
+  const filtered = allServices.filter((s) => s.category === activeCategory)
 
   if (loading || !data) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner className="min-h-[60vh]" />
   }
 
   return (
-    <section className="py-24">
+    <section aria-labelledby="pricing-heading" className="py-24">
       <Container>
         <SectionHeading
+          as="h1"
+          id="pricing-heading"
           eyebrow={data?.heading?.eyebrow}
           title={data?.heading?.title}
           description={data?.heading?.description}
         />
 
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 mb-12" role="tablist" aria-label="Service categories">
           {categories.map((cat) => (
             <button
               key={cat.key}
-              onClick={() => setActive(cat.key)}
+              onClick={() => setActiveCategory(cat.key)}
+              role="tab"
+              aria-selected={activeCategory === cat.key}
+              aria-controls="pricing-panel"
               className={`px-5 py-2.5 text-sm font-medium rounded-full cursor-pointer transition-colors ${
-                active === cat.key
+                activeCategory === cat.key
                   ? 'bg-brand-950 text-white'
                   : 'bg-white text-brand-600 border border-brand-200 hover:bg-brand-100 hover:text-brand-950'
               }`}
@@ -107,7 +111,7 @@ export default function Pricing() {
           ))}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div id="pricing-panel" role="tabpanel" aria-live="polite" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((service) => (
             <ServiceCard key={service.id || service.name} service={service} />
           ))}

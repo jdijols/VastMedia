@@ -57,7 +57,7 @@ export default function Sidebar() {
         <p className="text-xs text-brand-400 mt-1">Admin Dashboard</p>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto" aria-label="Admin navigation">
         {links.map((link) => (
           <NavItem
             key={link.to}
@@ -85,7 +85,9 @@ export default function Sidebar() {
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-brand-950 text-white rounded-lg shadow-lg cursor-pointer"
-        aria-label="Toggle menu"
+        aria-label={mobileOpen ? 'Close sidebar' : 'Open sidebar'}
+        aria-expanded={mobileOpen}
+        aria-controls="admin-mobile-sidebar"
       >
         {mobileOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
@@ -100,6 +102,8 @@ export default function Sidebar() {
 
       {/* Mobile sidebar */}
       <aside
+        id="admin-mobile-sidebar"
+        aria-label="Admin sidebar"
         className={`lg:hidden fixed inset-y-0 left-0 z-40 w-64 bg-brand-950 flex flex-col transition-transform duration-300 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
@@ -108,7 +112,7 @@ export default function Sidebar() {
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-brand-950">
+      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-brand-950" aria-label="Admin sidebar">
         {nav}
       </aside>
     </>

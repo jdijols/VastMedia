@@ -2,20 +2,18 @@ import { Plus, Trash2 } from 'lucide-react'
 import { useEditor } from '../../hooks/useEditor'
 import SaveBar from '../../components/admin/SaveBar'
 import { SOCIAL_PLATFORMS } from '../../lib/socials'
+import Spinner from '../../components/ui/Spinner'
+import ErrorAlert from '../../components/ui/ErrorAlert'
 
 export default function FooterEditor() {
   const { data, loading, saving, saved, error, dirty, update, save, undo } =
     useEditor('footer')
 
   if (loading || !data) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner />
   }
 
-  function set(key, value) {
+  function updateField(key, value) {
     update({ ...data, [key]: value })
   }
 
@@ -28,18 +26,18 @@ export default function FooterEditor() {
       if (match) socials[index].label = match.label
     }
 
-    set('socials', socials)
+    updateField('socials', socials)
   }
 
   function addSocial() {
-    set('socials', [
+    updateField('socials', [
       ...data.socials,
       { id: `social-${Date.now()}`, platform: 'other', url: '', label: '' },
     ])
   }
 
   function removeSocial(index) {
-    set(
+    updateField(
       'socials',
       data.socials.filter((_, i) => i !== index)
     )
@@ -56,11 +54,7 @@ export default function FooterEditor() {
         </p>
       </div>
 
-      {error && (
-        <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">
-          {error}
-        </div>
-      )}
+      <ErrorAlert message={error} />
 
       <div className="mb-6">
         <SaveBar onSave={save} onUndo={undo} saving={saving} saved={saved} dirty={dirty} />
@@ -71,20 +65,22 @@ export default function FooterEditor() {
         <h2 className="font-semibold text-brand-950 mb-4">General</h2>
         <div className="space-y-4">
           <div>
-            <label className="admin-label">Footer Description</label>
+            <label htmlFor="admin-footer-description" className="admin-label">Footer Description</label>
             <textarea
+              id="admin-footer-description"
               className="admin-input min-h-[80px]"
               value={data.description}
-              onChange={(e) => set('description', e.target.value)}
+              onChange={(e) => updateField('description', e.target.value)}
               placeholder="Short description about your business"
             />
           </div>
           <div>
-            <label className="admin-label">Copyright Text</label>
+            <label htmlFor="admin-footer-copyright" className="admin-label">Copyright Text</label>
             <input
+              id="admin-footer-copyright"
               className="admin-input"
               value={data.copyright}
-              onChange={(e) => set('copyright', e.target.value)}
+              onChange={(e) => updateField('copyright', e.target.value)}
               placeholder="e.g. Vast Media. All rights reserved."
             />
             <p className="text-xs text-brand-400 mt-1">
@@ -99,22 +95,24 @@ export default function FooterEditor() {
         <h2 className="font-semibold text-brand-950 mb-4">Contact Info</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="admin-label">Email</label>
+            <label htmlFor="admin-footer-email" className="admin-label">Email</label>
             <input
+              id="admin-footer-email"
               className="admin-input"
               type="email"
               value={data.email}
-              onChange={(e) => set('email', e.target.value)}
+              onChange={(e) => updateField('email', e.target.value)}
               placeholder="you@example.com"
             />
           </div>
           <div>
-            <label className="admin-label">Phone Number</label>
+            <label htmlFor="admin-footer-phone" className="admin-label">Phone Number</label>
             <input
+              id="admin-footer-phone"
               className="admin-input"
               type="tel"
               value={data.phone}
-              onChange={(e) => set('phone', e.target.value)}
+              onChange={(e) => updateField('phone', e.target.value)}
               placeholder="(512) 555-0123"
             />
           </div>
@@ -132,8 +130,9 @@ export default function FooterEditor() {
             >
               <div className="grid gap-3 sm:grid-cols-3 flex-1">
                 <div>
-                  <label className="admin-label">Platform</label>
+                  <label htmlFor={`admin-footer-social-${i}-platform`} className="admin-label">Platform</label>
                   <select
+                    id={`admin-footer-social-${i}-platform`}
                     className="admin-input"
                     value={social.platform}
                     onChange={(e) => updateSocial(i, 'platform', e.target.value)}
@@ -146,8 +145,9 @@ export default function FooterEditor() {
                   </select>
                 </div>
                 <div>
-                  <label className="admin-label">Display Name</label>
+                  <label htmlFor={`admin-footer-social-${i}-label`} className="admin-label">Display Name</label>
                   <input
+                    id={`admin-footer-social-${i}-label`}
                     className="admin-input"
                     value={social.label}
                     onChange={(e) => updateSocial(i, 'label', e.target.value)}
@@ -155,8 +155,9 @@ export default function FooterEditor() {
                   />
                 </div>
                 <div>
-                  <label className="admin-label">URL</label>
+                  <label htmlFor={`admin-footer-social-${i}-url`} className="admin-label">URL</label>
                   <input
+                    id={`admin-footer-social-${i}-url`}
                     className="admin-input"
                     value={social.url}
                     onChange={(e) => updateSocial(i, 'url', e.target.value)}
@@ -167,6 +168,7 @@ export default function FooterEditor() {
               <button
                 onClick={() => removeSocial(i)}
                 className="admin-icon-btn text-red-500 hover:bg-red-50 mt-6"
+                aria-label="Remove social link"
               >
                 <Trash2 size={14} />
               </button>
